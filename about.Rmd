@@ -26,7 +26,7 @@ h3{color:rgb(26, 72, 112)}
 # **Carga y visualización de los datos**
 
 
-```{r}
+```{r, warning=FALSE}
 library(readxl)
 habitaciones <- read_excel("C:/Users/User/Downloads/habitaciones.xlsx")
 colnames(habitaciones) <- c("Habitaciones", "Kilowatts_hora")
@@ -51,17 +51,15 @@ A partir del ajuste del modelo de regresión lineal simple, se encontró que el 
 
 Los principales resultados son:
 
-\begin{itemize}
-  \item \textbf{Intercepto} $(b_0 = 1{,}333)$: representa el consumo estimado cuando una vivienda tiene 0 habitaciones. 
+- Intercepto $(b_0 = 1{,}333)$: representa el consumo estimado cuando una vivienda tiene 0 habitaciones. 
   
-  \item \textbf{Pendiente} $(b_1 = 0{,}6667)$: indica que por cada habitación adicional, el consumo de energía aumenta en promedio $0{,}667$ mil kilowatts-hora.
+- Pendiente $(b_1 = 0{,}6667)$: indica que por cada habitación adicional, el consumo de energía aumenta en promedio $0{,}667$ mil kilowatts-hora.
   
-  \item \textbf{Valor p}: $0{,}000333$. Como es menor que $0{,}05$, se confirma que el número de habitaciones es un factor importante para explicar el consumo.
+- Valor p: $0{,}000333$. Como es menor que $0{,}05$, se confirma que el número de habitaciones es un factor importante para explicar el consumo.
   
-  \item \textbf{Coeficiente de determinación} $(R^2 = 0{,}8168)$: el modelo explica el $81{,}68\%$ de la variación en el consumo de energía.
+- Coeficiente de determinación $(R^2 = 0{,}8168)$: el modelo explica el $81{,}68\%$ de la variación en el consumo de energía.
   
-  \item \textbf{Error estándar residual}: $0{,}9129$, que muestra el promedio de error entre los valores observados y los estimados.
-\end{itemize}
+- Error estándar residual: $0{,}9129$, que muestra el promedio de error entre los valores observados y los estimados.
 
 Para construir la ecuación de la regresión, se extrajeron los coeficientes estimados (intercepto y pendiente), como se muestra a continuación:
 
@@ -382,6 +380,7 @@ residuos <- rstandard(modelo)
 qqnorm(residuos)
 qqline(residuos, col = "red")
 ```
+
 En el gráfico Q-Q de los residuos estandarizados se observa que algunos puntos siguen aproximadamente la línea de referencia, mientras que otros, especialmente hacia los extremos, presentan desviaciones considerables. Este comportamiento indica que los residuos no se ajustan completamente a una distribución normal, por lo que el supuesto de normalidad no se cumple de manera estricta.
 
 **Shapiro-Wilk:**
