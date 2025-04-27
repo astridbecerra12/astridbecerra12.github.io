@@ -1,0 +1,244 @@
+---
+title: "Descripción inicial del modelo de regresión lineal"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    code_download: true
+    theme: lumen 
+    toc_depth: 3 
+    css: styles.css
+    pandoc_args: ["--variable=footnotes-title:Bibliografía"]
+---
+```{r, echo=FALSE}
+library(readxl)
+library(knitr)     
+library(kableExtra)
+```
+```{css,echo=FALSE}
+.column {display:flex;}
+h1{color:rgb(26, 72, 112)}
+h2{color:rgb(26, 72, 112)}
+h3{color:rgb(26, 72, 112)}
+```
+# **Datos del problema**
+
+```{r}
+library(readxl)
+habitaciones <- read_excel("C:/Users/User/Downloads/habitaciones.xlsx")
+colnames(habitaciones) <- c("Habitaciones", "Kilowatts_hora")
+kable(habitaciones, caption = "Tabla 1. Datos de numero de habitaciones y consumo de kilowatts-hora",
+      align = 'c') %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"),
+                full_width = F,
+                position = "center")
+```
+
+# **1. Contexto**
+
+Una empresa de servicios eléctricos realizó un estudio para analizar el consumo de energía eléctrica en viviendas. Para ello, se consideraron datos de 10 casas, registrando para cada una de ellas el número de habitaciones y el consumo mensual de energía medido en miles de kilowatts-hora. El propósito del estudio es describir y modelar la relación existente entre estas dos variables mediante un modelo de regresión lineal simple.
+
+## **Variables del estudio**
+
+En este estudio se trabaja con dos variables cuantitativas que serán analizadas mediante un modelo de regresión lineal simple, diferenciando entre:
+
+- **Variable independiente ($x$):** Número de habitaciones.  
+- **Variable dependiente ($\hat{y}$):** Consumo de energía eléctrica (en miles de kilowatts-hora).  
+  
+El número de habitaciones se considera como variable independiente, ya que es una característica propia de la vivienda que puede influir sobre el consumo de energía, pero no depende de él.  Por otro lado, el consumo de energía eléctrica se considera como variable dependiente, ya que puede variar en función de las características de la vivienda, entre ellas, el número de habitaciones.
+
+# **2. Diagrama de dispersión**
+
+Antes de ajustar el modelo de regresión, es importante realizar una visualización inicial de los datos, ya que el diagrama de dispersión permite explorar gráficamente la relación entre el número de habitaciones y el consumo de energía eléctrica, identificar posibles patrones de asociación, y evaluar la distribución general de los datos.
+
+```{r}
+plot(habitaciones$`Habitaciones`, habitaciones$`Kilowatts_hora`, 
+     xlab = "Numero de habitaciones", 
+     ylab = "Consumo de kilowatts-hora", 
+     main = "Diagrama de dispersion: Consumo vs Numero de habitaciones")
+
+```
+
+El diagrama de dispersión muestra una relación directa y positiva entre el número de habitaciones y el consumo de energía eléctrica, evidenciando que a medida que aumenta el número de habitaciones también tiende a incrementarse el consumo, patrón que sugiere que un modelo de regresión lineal simple podría describir adecuadamente esta asociación al reflejar una tendencia aproximadamente lineal en los datos; además, aunque se tienen diez observaciones, en el gráfico solo se aprecian nueve puntos debido a que dos viviendas comparten exactamente el mismo número de habitaciones y consumo, provocando una superposición en la representación gráfica.
+
+# **3. Ajuste del modelo de regresión**
+
+Una vez observada la posible relación lineal entre las variables, se procede a ajustar un modelo de regresión lineal simple que permita cuantificar la relación entre variables, este modelo busca encontrar una recta que describa la relación entre el número de habitaciones y el consumo de energía eléctrica, de manera que las diferencias entre los valores observados y los valores predichos sean lo más pequeñas posibles en promedio.
+
+```{r}
+# Ajustar el modelo de regresión lineal simple
+modelo <- lm(`Kilowatts_hora` ~ `Habitaciones`, data = habitaciones)
+
+# Mostrar resumen del modelo
+summary(modelo)
+
+```
+Después del ajuste del modelo de regresión lineal simple, se procederá a presentar gráficamente la recta estimada sobre el diagrama de dispersión. Esta línea recta refleja la relación entre el número de habitaciones y el consumo de energía eléctrica, facilitando la visualización del patrón general y mostrando cómo varía el consumo estimado a medida que aumenta el número de habitaciones.
+
+```{r}
+#Diagrama de dispersión 
+plot(habitaciones$`Habitaciones`, habitaciones$`Kilowatts_hora`, 
+     xlab = "Numero de habitaciones", 
+     ylab = "Consumo de kilowatts-hora",
+     main = "Diagrama de dispersion: Consumo vs Numero de habitaciones",
+     pch = 19)
+
+# Agregar la recta de regresión
+abline(modelo, col = "blue", lwd = 2)
+
+# Coeficientes
+b0 <- round(coef(modelo)[1], 3)
+b1 <- round(coef(modelo)[2], 3)
+
+# Ecuación de la recta de regresión lineal 
+ecuacion <- paste0("y = ", b0, " + ", b1, "x")
+
+# Agregar la ecuación en la gráfica
+text(x = 6, y = 10, labels = ecuacion, col = "blue", cex = 0.9)
+
+```
+
+En el diagrama de dispersión se observa una recta de regresión con pendiente positiva de aproximadamente 0,667 e intercepto de 1,333, lo que confirma la existencia de una relación directa y creciente entre el número de habitaciones y el consumo de energía eléctrica.
+
+# **4. Interpretación de los parámetros de regresión**
+```{r}
+# Parámetros del modelo
+coeficientes <- coef(modelo)
+
+# Tabla de parámetros
+kable(as.data.frame(t(coeficientes)), 
+      col.names = c("Intercepto (b0)", "Pendiente (b1)"),
+      caption = "Tabla 2. Coeficientes estimados del modelo de regresion") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"),
+                full_width = FALSE,
+                position = "center")
+```
+El parámetro de intercepto ($b_0$) indica que el consumo estimado de energía para una vivienda sin habitaciones sería de aproximadamente 1,333 miles de kilowatts-hora, mientras que la pendiente ($b_1$) señala que por cada habitación adicional, el consumo de energía eléctrica aumenta 0,667 miles de kilowatts-hora.
+
+# **5. Coeficiente de determinación y de correlación**
+```{r}
+# Calcular coeficientes
+correlacion <- cor(habitaciones$`Habitaciones`, habitaciones$`Kilowatts_hora`)
+determinacion <- correlacion^2
+
+# Mostrar resultados usando cat
+cat("Coeficiente de correlación (r):", round(correlacion, 4), "\n")
+cat("Coeficiente de determinación (R²):", round(determinacion, 4))
+```
+El coeficiente de correlación obtenido es 0,9038, un valor positivo y cercano a uno, lo que indica una relación directa y fuerte entre el número de habitaciones y el consumo de energía eléctrica. Por otro lado, el coeficiente de determinación es 0,8168, lo que significa que aproximadamente el 81,68% de la variabilidad observada en el consumo puede ser explicada a partir del número de habitaciones, respaldando el buen ajuste del modelo de regresión lineal simple.
+
+No obstante, para corroborar confirmar estadísticamente la existencia de una relación lineal entre el número de habitaciones y el consumo de energía eléctrica, se realiza una prueba de hipótesis sobre el coeficiente de correlación de Pearson, teniendo como hipótesis las siguintes: 
+
+- Hipótesis nula ($H_0$): $\rho = 0$  
+  (No existe correlación lineal entre el número de habitaciones y el consumo de energía eléctrica).
+
+- Hipótesis alternativa ($H_1$): $\rho \neq 0$  
+  (Existe correlación lineal entre el número de habitaciones y el consumo de energía eléctrica).
+
+```{r}
+cor.test(habitaciones$`Habitaciones`, habitaciones$`Kilowatts_hora`)
+```
+La prueba de hipótesis para el coeficiente de correlación de Pearson arroja un valor p de 0,0003332, el cual es significativamente menor al nivel de significancia de 0,05, lo cual permite rechazar la hipótesis nula ($H_0: \rho = 0$) y concluir que existe una correlación lineal significativa entre el número de habitaciones y el consumo de energía eléctrica.  
+
+# **6.  Validación de los supuestos del modelo**
+
+Para asegurar que el modelo de regresión lineal simple es adecuado, se validan los siguientes supuestos: normalidad de los residuos, homocedasticidad (varianza constante) y ausencia de patrones sistemáticos en los residuos.
+
+## **6.1 Gráfico de residuos vs valores ajustados**
+
+```{r}
+residuos <- rstandard(modelo)
+valores.ajustados <- fitted(modelo)
+
+plot(valores.ajustados, residuos,
+     xlab = "Valores ajustados",
+     ylab = "Residuos estandarizados",
+     main = "Residuos vs Valores ajustados",
+     pch = 19)
+abline(h = 0, col = "red")
+
+```
+El gráfico de residuos contra valores ajustados muestra que los residuos se dispersan de manera aleatoria alrededor de la línea horizontal en cero, sin seguir formas específicas ni agrupaciones, lo que sugiere que el modelo cumple adecuadamente con el supuesto de homocedasticidad y mantiene una relación lineal entre las variables.
+
+## **6.2 Gráfico Q-Q de normalidad de residuos**
+
+```{r}
+qqnorm(residuos,
+       main = "Q-Q plot de residuos")
+qqline(residuos, col = "red")
+
+```
+
+El gráfico Q-Q de residuos muestra que, aunque algunos puntos cercanos al centro siguen la línea recta, se observan desviaciones importantes en los extremos, esto sugiere que los residuos no siguen completamente una distribución normal.
+
+## **6.3 Prueba de normalidad de Shapiro-Wilk**
+
+Las hipótesis de la prueba de Shapiro-Wilk son:
+
+- Hipótesis nula ($H_0$): Los residuos siguen una distribución normal.
+- Hipótesis alternativa ($H_1$): Los residuos no siguen una distribución normal.
+
+```{r}
+shapiro.test(resid(modelo))
+```
+La prueba de Shapiro-Wilk arroja un valor p de 0,0058, el cual es menor al nivel de significancia de 0,05, por que se rechaza la hipótesis nula de normalidad, indicando que los residuos no siguen una distribución normal y confirmando lo observado en la prueba anterior. 
+
+## **6.4 Prueba de homocedasticidad de Breusch-Pagan**
+
+Las hipótesis de la prueba de Breusch-Pagan son:
+
+- Hipótesis nula ($H_0$): La varianza de los residuos es constante (homocedasticidad).
+- Hipótesis alternativa ($H_1$): La varianza de los residuos no es constante (heterocedasticidad).
+
+```{r}
+library(car)
+# Prueba de homocedasticidad de Breusch-Pagan
+ncvTest(modelo)
+```
+La prueba de Breusch-Pagan arroja un valor p de 0,8627, el cual es mayor al nivel de significancia de 0,05, por lo que no se rechaza la hipótesis nula de homocedasticidad, indicando que la varianza de los residuos se puede considerar constante en el modelo de regresión.
+
+# **7.  Pruebas de significancia sobre los parámetros**
+
+Para realizar las pruebas de hipótesis debemos recordar el resumen del modelo: 
+
+```{r}
+# Mostrar resumen del modelo
+summary(modelo)
+```
+## Para el intercepto ($b_0$):
+
+- Hipótesis nula ($H_0$): $\beta_0 = 0$  
+  (el consumo de energía es nulo cuando el número de habitaciones es cero).
+  
+- Hipótesis alternativa ($H_1$): $\beta_0 \neq 0$  
+  (el consumo de energía no es nulo cuando el número de habitaciones es cero).
+
+A partir de la salida del modelo, se observa que el valor p asociado al intercepto es 0,242, el cual es mayor al nivel de significancia de 0,05.  
+Por lo tanto, no se rechaza la hipótesis nula, lo que indica que no hay evidencia estadística suficiente para afirmar que el consumo de energía sea diferente de cero cuando no hay habitaciones.
+
+## Para el intercepto ($b_1$):
+
+- Hipótesis nula ($H_0$): $\beta_1 = 0$  
+  (el número de habitaciones no tiene efecto sobre el consumo de energía).
+  
+- Hipótesis alternativa ($H_1$): $\beta_1 \neq 0$  
+  (el número de habitaciones sí tiene efecto sobre el consumo de energía).
+
+A partir de la salida del modelo, se observa que el valor p asociado a la pendiente es 0,0003332, el cual es menor al nivel de significancia de 0,05, por lo que, se rechaza la hipótesis nula, concluyendo que existe evidencia estadísticamente significativa de que el número de habitaciones influye en el consumo de energía eléctrica.
+
+# **8. Tabla de ANOVA**
+
+```{r}
+anova(modelo)
+```
+La tabla ANOVA correspondiente al modelo de regresión muestra un valor de F igual a 35,68, con 1 grado de libertad para el modelo y 8 grados de libertad para el error. El valor p asociado a esta prueba es 0,0003332, que resulta ser mucho menor al nivel de significancia de 0,05.
+
+En este contexto, las hipótesis que se plantean son las siguientes:
+
+- Hipótesis nula ($H_0$): el modelo de regresión no explica mejor la variabilidad en el consumo de energía que un modelo sin variables predictoras, es decir, la pendiente ($\beta_1$) es igual a cero.
+- Hipótesis alternativa ($H_1$): el modelo de regresión explica significativamente la variabilidad en el consumo de energía, es decir, la pendiente ($\beta_1$) es diferente de cero.
+
+Dado que el valor p es menor que 0,05, se rechaza la hipótesis nula ($H_0$) y se concluye que el modelo de regresión lineal es significativo, lo cual indica que el número de habitaciones tiene un efecto estadísticamente significativo sobre el consumo de energía eléctrica, y por lo tanto, el modelo explica de manera adecuada parte importante de la variabilidad de la variable que se busca interpretar. 
+

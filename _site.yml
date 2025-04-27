@@ -1,0 +1,24 @@
+---
+name: "Análisis de Caso 2"
+output_dir: "."
+navbar:
+  title: "📊 Análisis de caso 2"
+  left:
+    - text: "Descripción del modelo de regresión"
+      icon: fa-chart-bar
+      href: index.html
+    - text: "Solución del taller de regresión"
+      icon: fa-calculator
+      href: about.html
+  right:
+    - text: "Autores: Carolina Gonzalez Becerra, Nicole García Bernal"
+      href: "#"
+output:
+  html_document:
+    theme: yeti
+    highlight: tango
+    toc: true                
+    toc_float: false          
+    toc_depth: 4             
+    css: styles.css          
+---
