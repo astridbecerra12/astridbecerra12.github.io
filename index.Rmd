@@ -123,7 +123,6 @@ El parámetro de intercepto ($b_0$) indica que el consumo estimado de energía p
 correlacion <- cor(habitaciones$`Habitaciones`, habitaciones$`Kilowatts_hora`)
 determinacion <- correlacion^2
 
-# Mostrar resultados usando cat
 cat("Coeficiente de correlación (r):", round(correlacion, 4), "\n")
 cat("Coeficiente de determinación (R²):", round(determinacion, 4))
 ```

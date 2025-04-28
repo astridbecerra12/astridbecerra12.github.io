@@ -92,13 +92,12 @@ Con la ecuación de regresión estimada, es posible predecir el consumo de energ
 \]
 
 ```{r,warning=FALSE}
-# Crear nuevo dato
+# Crear nuevo dato 
 nueva_casa <- data.frame(Habitaciones = 4)
 
-# Realizar la predicción
+# Realizar la predicción con 4 habitaciones
 prediccion_4_habitaciones <- predict(modelo, nueva_casa)
 
-# Mostrar el resultado con tres decimales
 cat("El consumo estimado para una vivienda con 4 habitaciones es:", 
     format(prediccion_4_habitaciones, nsmall = 3), 
     "miles de kilowatts-hora.\n")
@@ -127,6 +126,7 @@ La suma de cuadrados del componente de residuos (SCE) mide la cantidad de variab
 ```{r,warning=FALSE}
 # Calcular la suma de cuadrados de los residuos
 suma_cuadrados_residuos <- sum(resid(modelo)^2)
+
 cat("La suma de cuadrados de los residuos (SCE) es aproximadamente:", 
     format(round(suma_cuadrados_residuos, 3), nsmall = 3),
     "miles de kilowatts-hora².\n")
@@ -279,6 +279,7 @@ Se rechaza la hipótesis nula ($H_0$) y se concluye que existe evidencia estadí
 ```{r, warning=FALSE}
 # Cálculo del coeficiente de correlación (r)
 correlacion <- cor(habitaciones$Habitaciones, habitaciones$Kilowatts_hora)
+
 cat("Coeficiente de correlación (r):", round(correlacion, 4))
 ```
 La afirmación es verdadera porque el valor del coeficiente de correlación es cercano a 1 y positivo, indicando una asociación lineal fuerte y directa entre el número de habitaciones y el consumo de energía.
@@ -292,6 +293,7 @@ La afirmación es falsa porque la variable dependiente es el consumo de energía
 ```{r, warning=FALSE}
 # Cálculo del coeficiente de determinación (R^2)
 determinacion <- correlacion^2
+
 cat("Coeficiente de determinación (R^2):", round(determinacion, 4))
 ```
 La afirmación es verdadera porque el coeficiente de determinación indica que el 81,68% de la variabilidad en el consumo de energía se explica a través del número de habitaciones.
