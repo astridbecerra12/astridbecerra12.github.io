@@ -1,8 +1,8 @@
 ---
-name: "Análisis de Caso 2"
+name: "Análisis de Caso 3"
 output_dir: "."
 navbar:
-  title: "📊 Análisis de caso 2"
+  title: "📊 Análisis de caso 3"
   left:
     - text: "Descripción del modelo de regresión"
       icon: fa-chart-bar
