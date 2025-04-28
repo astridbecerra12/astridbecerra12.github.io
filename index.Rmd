@@ -29,7 +29,7 @@ h3{color:rgb(26, 72, 112)}
 library(readxl)
 habitaciones <- read_excel("C:/Users/User/Downloads/habitaciones.xlsx")
 colnames(habitaciones) <- c("Habitaciones", "Kilowatts_hora")
-kable(habitaciones, caption = "Tabla 1. Datos de numero de habitaciones y consumo de kilowatts-hora",
+kable(habitaciones, caption = "Tabla 1. Datos de número de habitaciones y consumo de kilowatts-hora",
       align = 'c') %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"),
                 full_width = F,
@@ -57,7 +57,7 @@ Antes de ajustar el modelo de regresión, es importante realizar una visualizaci
 plot(habitaciones$`Habitaciones`, habitaciones$`Kilowatts_hora`, 
      xlab = "Numero de habitaciones", 
      ylab = "Consumo de kilowatts-hora", 
-     main = "Diagrama de dispersion: Consumo vs Numero de habitaciones")
+     main = "Diagrama de dispersión: Consumo vs Número de habitaciones")
 
 ```
 
@@ -82,7 +82,7 @@ Después del ajuste del modelo de regresión lineal simple, se procederá a pres
 plot(habitaciones$`Habitaciones`, habitaciones$`Kilowatts_hora`, 
      xlab = "Numero de habitaciones", 
      ylab = "Consumo de kilowatts-hora",
-     main = "Diagrama de dispersion: Consumo vs Numero de habitaciones",
+     main = "Diagrama de dispersión: Consumo vs Número de habitaciones",
      pch = 19)
 
 # Agregar la recta de regresión
@@ -110,7 +110,7 @@ coeficientes <- coef(modelo)
 # Tabla de parámetros
 kable(as.data.frame(t(coeficientes)), 
       col.names = c("Intercepto (b0)", "Pendiente (b1)"),
-      caption = "Tabla 2. Coeficientes estimados del modelo de regresion") %>%
+      caption = "Tabla 2. Coeficientes estimados del modelo de regresión") %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"),
                 full_width = FALSE,
                 position = "center")

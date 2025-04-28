@@ -281,7 +281,7 @@ Se rechaza la hipótesis nula ($H_0$) y se concluye que existe evidencia estadí
 correlacion <- cor(habitaciones$Habitaciones, habitaciones$Kilowatts_hora)
 cat("Coeficiente de correlación (r):", round(correlacion, 4))
 ```
-La afirmación es verdadera porque el valor del coeficiente de correlación es cercano a 1 y positivo, indicando una asociación lineal fuerte entre el número de habitaciones y el consumo de energía.
+La afirmación es verdadera porque el valor del coeficiente de correlación es cercano a 1 y positivo, indicando una asociación lineal fuerte y directa entre el número de habitaciones y el consumo de energía.
 
 ## **8.2 La variable dependiente corresponde al número de habitaciones de la vivienda familiar**
 
